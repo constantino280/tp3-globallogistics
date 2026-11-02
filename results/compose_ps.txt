@@ -1,0 +1,5 @@
+NAME                    IMAGE                           STATUS                    PORTS
+globallogistics-api-1   globallogistics/cotizador:1.0   Up 35 minutes (healthy)   8080/tcp
+globallogistics-api-2   globallogistics/cotizador:1.0   Up 8 minutes (healthy)    8080/tcp
+globallogistics-api-3   globallogistics/cotizador:1.0   Up 15 minutes (healthy)   8080/tcp
+globallogistics-lb-1    haproxy:3.0-alpine              Up 35 minutes (healthy)   0.0.0.0:8080->8080/tcp, 0.0.0.0:8404->8404/tcp

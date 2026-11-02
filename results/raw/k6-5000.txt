@@ -1,0 +1,2 @@
+time="2026-11-02T21:36:04Z" level=warning msg="Insufficient VUs, reached 4000 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=open_loop
+5000,3743.7,513.05,82.16,1639.52,1692.61,2299.85,0.000,34355

@@ -1,0 +1,18 @@
+$ curl http://localhost:8080/   (x12)
+ 1  {"service":"cotizador","instance":"c74ccad6f565","status":"ok"}
+ 2  {"service":"cotizador","instance":"fb342358de8f","status":"ok"}
+ 3  {"service":"cotizador","instance":"c45a46a7cbfa","status":"ok"}
+ 4  {"service":"cotizador","instance":"c74ccad6f565","status":"ok"}
+ 5  {"service":"cotizador","instance":"fb342358de8f","status":"ok"}
+ 6  {"service":"cotizador","instance":"c45a46a7cbfa","status":"ok"}
+ 7  {"service":"cotizador","instance":"c74ccad6f565","status":"ok"}
+ 8  {"service":"cotizador","instance":"fb342358de8f","status":"ok"}
+ 9  {"service":"cotizador","instance":"c45a46a7cbfa","status":"ok"}
+10  {"service":"cotizador","instance":"c74ccad6f565","status":"ok"}
+11  {"service":"cotizador","instance":"fb342358de8f","status":"ok"}
+12  {"service":"cotizador","instance":"c45a46a7cbfa","status":"ok"}
+
+Reparto de 300 peticiones por instancia:
+    100 c45a46a7cbfa
+    100 c74ccad6f565
+    100 fb342358de8f

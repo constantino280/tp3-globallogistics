@@ -1,0 +1,103 @@
+=== A. Health check activo ===
+[18:47:34] Estado inicial:
+  api-1   UP
+  api-2   UP
+  api-3   UP
+[18:47:35] La réplica 2 pasa a responder 503 en /health
+{"instance":"fb342358de8f","forcedUnhealthy":true}
+[18:47:41] Réplica fuera de rotación tras 6 s:
+  api-1   DOWN
+  api-2   UP
+  api-3   UP
+Reparto de 30 peticiones con la réplica fuera:
+     15 c45a46a7cbfa
+     15 c74ccad6f565
+[18:47:44] La réplica vuelve a responder 200
+{"instance":"fb342358de8f","forcedUnhealthy":false}
+[18:47:48] Réplica reincorporada tras 4 s:
+  api-1   UP
+  api-2   UP
+  api-3   UP
+Reparto de 30 peticiones:
+     10 c45a46a7cbfa
+     10 c74ccad6f565
+     10 fb342358de8f
+
+=== B. Caída de una réplica bajo carga (k6 a tasa fija, 60 s) ===
+[18:48:12] Se mata el proceso Node de la réplica 2 (sin aviso)
+[18:48:16]
+  api-1   UP
+  api-2   UP
+  api-3   UP
+[18:48:18]
+  api-1   UP
+  api-2   UP
+  api-3   UP
+[18:48:21]
+  api-1   UP
+  api-2   UP
+  api-3   UP
+[18:48:23]
+  api-1   UP
+  api-2   UP
+  api-3   UP
+[18:48:25]
+  api-1   UP
+  api-2   UP
+  api-3   UP
+[18:48:27]
+  api-1   UP
+  api-2   UP
+  api-3   UP
+[18:48:30]
+  api-1   UP
+  api-2   UP
+  api-3   UP
+[18:48:32]
+  api-1   UP
+  api-2   UP
+  api-3   UP
+[18:48:34]
+  api-1   UP
+  api-2   UP
+  api-3   UP
+[18:48:37]
+  api-1   UP
+  api-2   UP
+  api-3   UP
+[18:48:39]
+  api-1   UP
+  api-2   UP
+  api-3   UP
+[18:48:41]
+  api-1   UP
+  api-2   UP
+  api-3   UP
+target_rps,achieved_rps,mean_ms,p50_ms,p95_ms,p99_ms,max_ms,failed_pct,dropped
+1500,1500.1,5.10,1.46,15.67,74.85,2492.26,0.022,0
+NAME                    STATUS
+globallogistics-api-1   Up 27 minutes (healthy)
+globallogistics-api-2   Up 41 seconds (healthy)
+globallogistics-api-3   Up 7 minutes (healthy)
+
+=== C. Escalado sin reconfigurar el balanceador ===
+[18:49:14] Con --scale api=5:
+  api-1   UP
+  api-2   UP
+  api-3   UP
+  api-4   UP
+  api-5   UP
+Reparto de 50 peticiones:
+     10 199b9b91c4ed
+     10 2dcb36c6bf71
+     10 c45a46a7cbfa
+     10 c74ccad6f565
+     10 fb342358de8f
+[18:49:33] De vuelta a 3 réplicas:
+  api-1   UP
+  api-2   UP
+  api-3   UP
+Reparto de 30 peticiones:
+     10 c45a46a7cbfa
+     10 c74ccad6f565
+     10 fb342358de8f

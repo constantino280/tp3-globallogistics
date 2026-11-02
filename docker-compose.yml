@@ -1,0 +1,76 @@
+name: globallogistics
+
+services:
+  # Exactamente un balanceador de carga: único punto de entrada publicado.
+  lb:
+    image: haproxy:3.0-alpine
+    volumes:
+      - ./lb/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    ports:
+      - "8080:8080"
+      - "8404:8404"
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8404/stats"]
+      interval: 5s
+      timeout: 2s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 256M
+    restart: always
+    networks: [backend]
+
+  # Exactamente tres réplicas idénticas. No publican puertos: solo se llega por el balanceador.
+  api:
+    build: ./api
+    image: globallogistics/cotizador:1.0
+    # Con init, si el proceso Node muere el contenedor termina y "restart" lo levanta.
+    init: true
+    environment:
+      PORT: "8080"
+      WORK_ITERATIONS: "1000"
+      CHAOS_ENABLED: "true"
+    expose:
+      - "8080"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/health"]
+      interval: 5s
+      timeout: 2s
+      retries: 3
+      start_period: 5s
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 128M
+    restart: always
+    networks: [backend]
+
+  # Generadores de carga: no se levantan con "up", solo con "docker compose run".
+  # Corren dentro de la red para no medir el reenvío de puertos de Docker Desktop.
+  ab:
+    image: httpd:2.4-alpine
+    profiles: [tools]
+    entrypoint: ["ab"]
+    ulimits:
+      nofile: 65535
+    networks: [backend]
+
+  k6:
+    image: grafana/k6:0.54.0
+    profiles: [tools]
+    volumes:
+      - ./scripts:/scripts:ro
+      - ./results:/results
+    ulimits:
+      nofile: 65535
+    networks: [backend]
+
+networks:
+  backend:
